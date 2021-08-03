@@ -6,6 +6,8 @@
 
     <div class="table-responsive text-nowrap">
     <h2>Order Summary</h2>
+<!--        <form  method="POST">-->
+<!--        {% csrf_token %}-->
     <table class="table">
         <thead>
         <tr>
@@ -20,6 +22,7 @@
         <tbody>
         {% for order_item in object.items.all %}
         <tr>
+
             <th scope="row">{{ forloop.counter }}</th>
             <td>{{ order_item.item.title }}</td>
             <td>{{ order_item.item.price }}</td>
@@ -28,26 +31,8 @@
                 {{ order_item.quantity }}
                 <a href="{% url 'core:add-to-cart' order_item.item.slug %}"><i class="fas fa-plus ml-2"></i></a>
             </td>
-            <td>
-<!--                <a> <input type="date" data-date-inline-picker="true" id='date_choose' name='date_choose' /></a>-->
+            <td>{{ order_item.invited_date }}</td>
 
-<!--                <form action="" method="post">-->
-<!--                <label for="your_name">Your name: </label>-->
-<!--                <input id="your_name" type="text" name="your_name" value="{{ current_name }}">-->
-<!--                <input type="submit" value="OK">-->
-<!--                </form>-->
-
-<!--                <form action="/your-name/" method="post">-->
-<!--                    {% csrf_token %}-->
-<!--                    {{ form }}-->
-<!--                    <input type="submit" value="Submit">-->
-<!--                </form>-->
-
-<!--                <form action="itsik" method="post">-->
-                    <a> <input id="date_choose" type="date" name='date_choose' data-date-inline-picker="true"  /></a>
-                    <input type="submit" value="Submit">
-<!--                </form>-->
-            </td>
             <td>
             {% if order_item.item.discount_price %}
                 ${{ order_item.get_total_discount_item_price }}
@@ -90,6 +75,7 @@
         {% endif %}
         </tbody>
     </table>
+<!--        </form>-->
 
     </div>
 

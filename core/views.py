@@ -1,6 +1,7 @@
 import random
 import string
-from datetime import datetime
+from datetime import datetime, date
+from bootstrap_datepicker_plus import DateTimePickerInput
 
 import stripe
 from django.conf import settings
@@ -15,9 +16,10 @@ from django.views.generic import ListView, DetailView, View
 
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
 from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, request
 from django.shortcuts import render
-
+from django.forms import DateTimeInput
+from django.views import generic
 
 
 def create_ref_code():
@@ -364,36 +366,49 @@ class OrderSummaryView(LoginRequiredMixin, View):
             messages.warning(self.request, "You do not have an active order")
             return redirect("/")
 
-    def toggle_date_and_update(self, request, *a, **kw):
-        order = Order.objects.get(user=self.request.user, ordered=False)
-        order.items.invited_date = datetime.datetime.get(id='date_choose')
-        order.items.save()
 
-
-#
-# def get_name(request):
-#     # if this is a POST request we need to process the form data
-#     if request.method == 'POST':
-#         # create a form instance and populate it with data from the request:
-#         form = NameForm(request.POST)
-#         # check whether it's valid:
-#         if form.is_valid():
-#             # process the data in form.cleaned_data as required
-#             # ...
-#             # redirect to a new URL:
-#             return HttpResponseRedirect('/thanks/')
-#
-#     # if a GET (or any other method) we'll create a blank form
-#     else:
-#         form = NameForm()
-#
-#     return render(request, 'name.html', {'form': form})
-
-
-class ItemDetailView(DetailView):
+class ItemDetailView(DetailView,View):
     model = Item
     template_name = "product.html"
 
+    # def get_form(self):
+    #     form = super().get_form()
+    #     form.fields['invited_date'].widget = DateTimePickerInput()
+    #     return form
+#
+# @login_required
+# def check_date_and_update(request, slug):
+#     item = get_object_or_404(Item, slug=slug)
+#     order_item, created = OrderItem.objects.get_or_create(
+#         item=item,
+#         user=request.user,
+#         ordered=False
+#     )
+#     order_qs = Order.objects.filter(user=request.user, ordered=False)
+#     if order_qs.exists():
+#         order = order_qs[0]
+#         # check if the order item is in the order
+#         if order.items.filter(item__slug=item.slug).exists():
+#             if order_item.item.invited_date!=item.invited_date:
+#                 order_item.item.invited_date = item.invited_date
+#                 order_item.save()
+#                 messages.info(request, "The date is available")
+#                 return redirect("core:product", slug=slug)
+#             else:
+#                 messages.info(request, "The date is NO available")
+#                 return redirect("core:product", slug=slug)
+#         else:
+#             # order.items.add(order_item)
+#             messages.info(request, "The date is NO available11111111111111111111")
+#             return redirect("core:product", slug=slug)
+#     else:
+#         # ordered_date = timezone.now()
+#         # order = Order.objects.create(
+#         #     user=request.user, ordered_date=ordered_date)
+#         # order.items.add(order_item)
+#         messages.info(request, "This item was added to your cart.")
+#         return redirect("core:product", slug=slug)
+#
 
 @login_required
 def add_to_cart(request, slug):
@@ -544,3 +559,11 @@ class RequestRefundView(View):
                 messages.info(self.request, "This order does not exist.")
                 return redirect("core:request-refund")
 
+
+# class CreateView(DetailView,View):
+#     model = Item
+#     fields = ['invited_date']
+#     def get_form(self):
+#         form = super().get_form()
+#         form.fields['invited_date'].widget = DateTimePickerInput()
+#         return form

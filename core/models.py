@@ -46,6 +46,7 @@ class Item(models.Model):
     description = models.TextField()
     image = models.ImageField()
     image_2 = models.ImageField()
+    invited_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
@@ -65,6 +66,10 @@ class Item(models.Model):
             'slug': self.slug
         })
 
+    def get_check_date_and_update_url(self):
+        return reverse("core:check-date-and-update", kwargs={
+            'slug': self.slug
+        })
 
 class OrderItem(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
@@ -72,7 +77,6 @@ class OrderItem(models.Model):
     ordered = models.BooleanField(default=False)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
-    invited_date = models.DateTimeField()
 
 
     def __str__(self):

@@ -5,6 +5,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(
     os.path.dirname(os.path.abspath(__file__))))
 
 SECRET_KEY = config('SECRET_KEY')
+# SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', <YOUR developing key>)
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -13,14 +14,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'bootstrap_datepicker_plus',
+    "bootstrap4",
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'crispy_forms',
     'django_countries',
-
     'core'
 ]
 

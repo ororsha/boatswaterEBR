@@ -2,8 +2,5 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/django-polls" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/pylibjpeg-libjpeg" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/pylibjpeg-libjpeg/libjpeg/src/libjpeg" vcs="Git" />
   </component>
 </project>
